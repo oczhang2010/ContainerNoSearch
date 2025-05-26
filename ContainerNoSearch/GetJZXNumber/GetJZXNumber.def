@@ -1,0 +1,3 @@
+LIBRARY GetJZXNumber
+EXPORTS Add
+EXPORTS GetJZXNumber
