@@ -1,4 +1,4 @@
-// GetJZXNumber.cpp : 定义 DLL 应用程序的导出函数。
+// GetJZXNumber.cpp : 
 //
 #include "ocrJzx.h"
 #include "stdafx.h"
@@ -20,7 +20,6 @@ extern "C" __declspec(dllexport) const int __stdcall GetJZXNumber(char* filename
 {
 	double t = (double)cvGetTickCount();
 
-	//出力フォルダを作成する
 	string filedir = filename;
 	filedir = filedir.substr(0, filedir.length() - 4);
 	if (_access((filedir).c_str(), 6) == -1)  
@@ -28,13 +27,11 @@ extern "C" __declspec(dllexport) const int __stdcall GetJZXNumber(char* filename
 		_mkdir((filedir).c_str());           
 	}
 
-	//写真を読込
 	Mat imgOri = imread(filename);
 	if (imgOri.empty()){
 		return false;
 	}
 
-	//写真サイズを統一：heightが480画素不満の場合，height＝480画素へ拡大
 	Mat img;
 	if (imgOri.rows > 0 && imgOri.rows > 480){
 		double r = 480.0 / imgOri.rows;

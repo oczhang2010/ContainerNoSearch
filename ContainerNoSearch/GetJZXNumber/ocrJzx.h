@@ -1,5 +1,4 @@
-#include "include\tesseract\baseapi.h"  //注意这行要放在前面一下，不然tesscallback.h中会出错！
-//tesseract编译参考https://blog.csdn.net/zhulingling329/article/details/53909637
+#include "include\tesseract\baseapi.h" 
 #include "include\leptonica\allheaders.h"
 #include "findContent.h"
 
@@ -20,13 +19,13 @@ public:
 
 	*/
 private:
-	//私有方法
+
 public:
 	OcrJzx();
 	~OcrJzx();
 	void OcrJzx::recognizeInfo(string outPath);
 	Mat OcrJzx::getWarpImage(Mat img, RotatedRect rect, int diffx = 0, int diffy = 0);
-	//String OcrJzx::ocrProcess(Mat in, int idx, RotatedRect box, int type); //type: 0=字母 1=数字
+	//String OcrJzx::ocrProcess(Mat in, int idx, RotatedRect box, int type); 
 	String OcrJzx::readText(Mat img, int type);
 	String OcrJzx::readString(Mat img, RotatedRect inBox, int charNum);
 };

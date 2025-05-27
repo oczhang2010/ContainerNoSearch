@@ -9,7 +9,6 @@ vector<Point2f> orderRotatedRectPoint(RotatedRect rect){
 			vector<Point2f> pts;
 			return pts;
 		}
-		//按x排序，分类为左面2点和右面2点
 		int max_x_idx[4];
 		float max_x = -99.0;
 		for (int i = 0; i < 4; i++){
@@ -39,8 +38,6 @@ vector<Point2f> orderRotatedRectPoint(RotatedRect rect){
 			}
 		}
 		Point2f p[4];
-		//点排序：左下为原点，顺时针排列
-		// 左面2点中y坐标大的排在第一点(左下),y坐标小的排在第二点(左上)
 		if (pt[max_x_idx[0]].y < pt[max_x_idx[1]].y){
 			p[0] = pt[max_x_idx[1]];
 			p[1] = pt[max_x_idx[0]];
@@ -49,7 +46,6 @@ vector<Point2f> orderRotatedRectPoint(RotatedRect rect){
 			p[0] = pt[max_x_idx[0]];
 			p[1] = pt[max_x_idx[1]];
 		}
-		//  右面2点中y坐标小的排在第三点(右上),x坐标大的排在第四点(右下)
 		if (pt[max_x_idx[2]].y < pt[max_x_idx[3]].y){
 			p[2] = pt[max_x_idx[2]];
 			p[3] = pt[max_x_idx[3]];
@@ -62,14 +58,12 @@ vector<Point2f> orderRotatedRectPoint(RotatedRect rect){
 		vector<Point2f> pts;
 		float w = __max(p[2].x, p[3].x) - __min(p[0].x, p[1].x);
 		if ((__max(p[2].y, p[3].y) - __min(p[1].y, p[2].y))>w && p[1].y > p[2].y && p[1].y > p[3].y){
-			//y方向高度 > x方向宽度，并且右边2点y轴坐标高于左边两点y坐标：短边是宽度长边是高度
-			pts.push_back(p[2]);
+		pts.push_back(p[2]);
 			pts.push_back(p[3]);
 			pts.push_back(p[0]);
 			pts.push_back(p[1]);
 		}
 		else if ((__max(p[2].y, p[3].y) - __min(p[1].y, p[2].y))>w && p[0].y < p[2].y && p[0].y < p[3].y){
-			//y方向高度 > x方向宽度，并且右边2点y轴坐标低于左边两点y坐标：短边是宽度长边是高度
 			//pts.push_back(p[0]);
 			//pts.push_back(p[1]);
 			//pts.push_back(p[2]);
@@ -131,7 +125,6 @@ vector<boxInfo> breakContours(Mat inputImage, boxInfo boxinfo, int Uwidth,int mi
 			rect.height = rect.height - step;
 		}
 		if (diff >= save_height * 1 / 3){
-			//切割到小于一半是退出
 			diff = 999;
 			continue;
 		}
@@ -166,7 +159,6 @@ vector<boxInfo> breakContours(Mat inputImage, boxInfo boxinfo, int Uwidth,int mi
 				b = getRotatedRectFromPoints(*(contours.begin()), &k);
 				CalcRotatedRectPoints(&b, &k);
 				if (b.size.height <= __max(boxinfo.box.size.height * 0.2, 3) || (b.size.width <= __max(boxinfo.box.size.height * 0.2, 3) && b.size.height <= 7)){
-					//分割后多出来的短线段不要
 					contours.erase((contours.begin()));
 					continue;
 				}
@@ -211,7 +203,7 @@ vector<boxInfo> breakContours(Mat inputImage, boxInfo boxinfo, int Uwidth,int mi
 				contours.erase((contours.begin()));
 			}
 			if (ret.size() == 0){
-				diff = 9999;  //diff设成不符合循环条件，退出循环
+				diff = 9999;  
 			}
 			if (ret.size() == 1){
 				if (box_save.box.size.width == 0 && box_width >(box_end - box_start) * 0.8 && (box_end - box_start > boxinfo.box.size.width*0.9 || boxinfo.box.size.width - (box_end - box_start) <= 4)){
@@ -255,7 +247,7 @@ vector<boxInfo> breakContours(Mat inputImage, boxInfo boxinfo, int Uwidth,int mi
 		//}
 	}
 	if (box_save.box.size.width >0){
-		//去掉2边长出来边框时，返回新boxinfo
+		
 		if (target == 1 && box_save.box.size.height < 13){
 			Point2f pt[4];
 			box_save.box.points(pt);
@@ -271,7 +263,6 @@ vector<boxInfo> breakContours(Mat inputImage, boxInfo boxinfo, int Uwidth,int mi
 		ret.push_back(box_save);
 	}
 	else{
-		//不能分割时，返回原来boxinfo
 		ret.push_back(boxinfo);
 	}
 	return ret;
@@ -281,13 +272,9 @@ void sortBoxInfo(vector<boxInfo>* pBoxinfos, int pos, int orient){
 	vector<boxInfo> boxs = *pBoxinfos;
 	vector<boxInfo> box_infos;
 	if (orient == 0){
-		//按x轴中心点从大到小排序
-		//pos : 0=按中心x排序 1=按左边距排序 2=按右边距排序
-		//去掉既存排序结果
 		for (int i = 0; i < boxs.size(); i++){
 			boxs[i].idx = -1;
 		}
-		//排序
 		int cur_idx = 0;
 		while (true){
 			int max_idx = -1;
@@ -313,13 +300,9 @@ void sortBoxInfo(vector<boxInfo>* pBoxinfos, int pos, int orient){
 		}
 	}
 	else{
-		//按y轴中心点从大到小排序
-		//pos : 0=按中心y排序 1=按上边距排序 2=按下边距距排序
-		//去掉既存排序结果
 		for (int i = 0; i < boxs.size(); i++){
 			boxs[i].idx = -1;
 		}
-		//排序
 		int cur_idx = 0;
 		while (true){
 			int max_idx = -1;
@@ -348,7 +331,6 @@ void sortBoxInfo(vector<boxInfo>* pBoxinfos, int pos, int orient){
 }
 
 void CalContourInfo(vector<vector<Point>> contours, LineInfo* lineInfo){
-	//重新计算外接矩形和斜率
 	RotatedRect newbox;
 	float k, b;
 	vector<Point> allPoints;
@@ -384,15 +366,13 @@ void CalcRotatedRectPoints(RotatedRect* box, float* k)
 		return;
 	}
 
-	//排序后返回的点顺是：左上为第一点，顺时针
-	//宽度是第一点和第二点之间距离，高度是第一点和第三点间距离
 	float w = sqrt(pow(pt[1].x - pt[0].x, 2) + pow((pt[1].y - pt[0].y), 2));
 	float h = sqrt(pow(pt[3].x - pt[0].x, 2) + pow((pt[3].y - pt[0].y), 2));
 	float angle = 0.0;
 	float kValue = 0.0;
 	if (pt[0].x == pt[1].x)
 	{
-		kValue = 99999;        /* k = 无穷大*/
+		kValue = 99999;       
 		angle = 90;
 	}
 	else
@@ -407,7 +387,6 @@ void CalcRotatedRectPoints(RotatedRect* box, float* k)
 	//RotatedRect ret_box = RotatedRect(box->center, Size(w, h), angle);
 	//*box = ret_box;
 
-	//如果高宽倒置时：互换高宽
 	if (box->size.width > 12 && box->size.height > 5){
 		Point2f ptTmp[4];
 		box->points(ptTmp);
@@ -448,7 +427,6 @@ Mat CreateMat(Mat src, Rect rect, bool isReturnErr){
 
 void CalBoxInfo(LineInfo* lineInfo){
 	vector<boxInfo> boxinfos = lineInfo->box_info;
-	//重新计算外接矩形和斜率
 	RotatedRect newbox;
 	float k, b;
 	vector<Point> allPoints;
@@ -602,7 +580,6 @@ string reverseText(string instr){
 }
 
 Mat jointMat(Mat img1, Mat img2, int diff){
-	//连接2个Mat，间距设为diff
 	if (img1.rows == 0){
 		return img2;
 	}
@@ -663,7 +640,6 @@ vector<ocrResult> sortOcrResult(map_ocrResult map, int charCount){
 }
 
 RotatedRect breakBox(RotatedRect inBox, int orient, int charCnt, int idx, float angle, float k, int diffx, int diffy){
-	//等分box后，获取第idx个子box
 	if (orient == 0){
 		float newX = inBox.center.x - inBox.size.width / 2 + inBox.size.width / charCnt *(idx + 0.5);
 		float newY = inBox.center.y;
@@ -692,10 +668,10 @@ void mapAdd(map_ocrResult* inMap, int conf, string text){
 	data.text = text;
 	map_ocrResult::iterator it = dic.find(text);
 	if (it == dic.end()){
-		dic.insert(map<string, ocrResult>::value_type(text, data)); //新text：插入
+		dic.insert(map<string, ocrResult>::value_type(text, data)); 
 	}
 	else{
-		dic[text].conf = (conf > dic[text].conf) ? conf : dic[text].conf; //更新分数
+		dic[text].conf = (conf > dic[text].conf) ? conf : dic[text].conf; 
 	}
 	*inMap = dic;
 	return;

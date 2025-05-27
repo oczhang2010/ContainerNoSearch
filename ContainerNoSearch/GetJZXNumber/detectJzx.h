@@ -8,7 +8,7 @@ class FindContent
 		float mUheight;
 		float mUwidth;
 		RotatedRect mBox_u;
-		RotatedRect mBox_u_all; //和U粘连在一起轮廓
+		RotatedRect mBox_u_all; 
 		float mBox_k;
 		LineInfo lineInfoOwner;
 		LineInfo lineInfoNo;
@@ -19,7 +19,7 @@ class FindContent
 		RotatedRect box_checkdigit;
 		bool isBlackHat = false;
 	private:
-		//私有方法
+		
 	public:
 		FindContent();
 		~FindContent();
@@ -28,11 +28,11 @@ class FindContent
 		int FindContent::findOwnerInfo(Rect rect, RotatedRect box, float k, int lastThresh = 0, int orient = 0);
 		int FindContent::findNoInfo(Rect rect, RotatedRect box, float k, int lastThresh = 0, int orient = 0);
 		int FindContent::findCheckDigitInfo(Rect rect, RotatedRect box, float k, int lastThresh = 0, int orient = 0);
-		void FindContent::filterContour(vector<vector<Point>> pContours, LineInfo* lineInfo, int rows, int cols, int orient = 0); //orient:0=横向 1=竖向
-		void FindContent::calContourType(LineInfo* lineInfo, int target = 0, int orient = 0); //target:0=all,1=owner orient:0=横向 1=竖向
-		void FindContent::rejustOwnerContourType(LineInfo* lineInfo, int orient = 0); //target:0=all,1=owner orient:0=横向 1=竖向
-		void FindContent::checkLine(LineInfo* lineInfo, int target = 0, int orient = 0);  //target:0=all,1=owner  orient:0=横向 1=竖向 
-		void FindContent::sortLineInfo(LineInfo* line_Info, int pos = 0, int orient = 0);        //orient:0=横向(pos:0=中心 1=左边距 2=右边距) 1=竖向(pos:0=中心 1=上边距 2=下边距)
+		void FindContent::filterContour(vector<vector<Point>> pContours, LineInfo* lineInfo, int rows, int cols, int orient = 0); 
+		void FindContent::calContourType(LineInfo* lineInfo, int target = 0, int orient = 0); 
+		void FindContent::rejustOwnerContourType(LineInfo* lineInfo, int orient = 0); 
+		void FindContent::checkLine(LineInfo* lineInfo, int target = 0, int orient = 0);   
+		void FindContent::sortLineInfo(LineInfo* line_Info, int pos = 0, int orient = 0);        
 };
 
 class DetectJzx
@@ -41,7 +41,7 @@ public:
 	int debug_level = 0;
 	FindContent findResult;
 private:
-	//私有方法
+	
 public:
 	DetectJzx();
 	~DetectJzx();
@@ -75,7 +75,7 @@ class OcrJzx
 		tesseract::TessBaseAPI* ocrApi;
 		FindContent findResult;
 	private:
-		//私有方法
+		
 	public:
 		OcrJzx();
 		~OcrJzx();
@@ -100,6 +100,6 @@ class OcrJzx
 		//void OcrJzx::doOcr(Mat imputImg, LineInfo lineInfo, int orient, int chartype, Mat* out, string* txt1, string* txt2);
 		//void OcrJzx::recognizeCheckdigit(Mat threshImg, Mat numImage, Mat* allNumberImage, string* txt1, string* txt2);
 		//String readText2(Mat img, int chartype, int* conf);
-		//String ocrProcess(Mat in, int idx, RotatedRect box, int type, string filename); //type: 0=字母 1=数字 filename(输出文件用)
+		//String ocrProcess(Mat in, int idx, RotatedRect box, int type, string filename); 
 
 };

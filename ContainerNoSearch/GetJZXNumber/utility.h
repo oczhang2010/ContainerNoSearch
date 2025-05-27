@@ -16,31 +16,30 @@ typedef struct _targetInfo
 targetInfo;
 
 typedef struct _boxInfo{
-	int idx;                //序号
-	int type;               //字符个数
-	vector<Point> contour;  //轮廓点集合
-	RotatedRect box;        //轮廓点的最小外接矩形
-	float k;                //斜率
+	int idx;                
+	int type;               
+	vector<Point> contour;  
+	RotatedRect box;        
+	float k;                
 }
 boxInfo;
 
 typedef struct _ocrResult{
-	int conf;                //评分
-	string text;             //ocr结果文字列
+	int conf;                
+	string text;             
 }
 ocrResult;
 
 typedef map<string, ocrResult> map_ocrResult;
 
-// line信息
 typedef struct _lineInfo
 {
-	RotatedRect box;	      // 外框的最小外接矩形 
-	float k;                  // 最小外接矩形的斜率k y=kx+b 
-	float b;                  // 最小外接矩形的偏移b y=kx+b 
-	int box_1of2_count = 0;   // 中心线上轮廓的数量
-	int box_num_count = 0;    // 检出字符数量
-	vector<boxInfo> box_info; //
+	RotatedRect box;	       
+	float k;                   
+	float b;                   
+	int box_1of2_count = 0;   
+	int box_num_count = 0;    
+	vector<boxInfo> box_info; 
 }
 LineInfo;
 
@@ -62,7 +61,7 @@ void CalBoxInfo(LineInfo* lineInfo);
 void CalcRotatedRectPoints(RotatedRect* box, float* k);
 void CalContourInfo(vector<vector<Point>> contours, LineInfo* lineInfo);
 RotatedRect getRotatedRectFromPoints(vector<Point> pts, float* k);
-void sortBoxInfo(vector<boxInfo>* pBoxinfo, int pos = 0, int orient = 0); //orient:0=横向(pos:0=中心 1=左边距 2=右边距) 1=竖向(pos:0=中心 1=上边距 2=下边距)
+void sortBoxInfo(vector<boxInfo>* pBoxinfo, int pos = 0, int orient = 0); 
 void drawRotatedRect(Mat srcImg, RotatedRect box, int thickness = 1, CvScalar color = CV_RGB(255, 255, 255));
 vector<Point2f> orderRotatedRectPoint(RotatedRect rect);
 Mat CreateMat(Mat src, Rect rect, bool isReturnErr = false);
